@@ -40,7 +40,7 @@ public class LogoutController extends HttpServlet {
         } catch (Exception e) {
             request.setAttribute("error", "Error at logout controller.");
         } 
-        response.sendRedirect(LOGIN_PAGE);
+        request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

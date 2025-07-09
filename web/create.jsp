@@ -14,7 +14,7 @@
     </head>
     <body>
         <h1>Create Page</h1>
-        
+
         <c:if test="${not empty sessionScope.loginUser}">
             Welcome ${sessionScope.loginUser.fullName} !
         </c:if>
