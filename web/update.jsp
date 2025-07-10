@@ -13,6 +13,10 @@
         <title>Update Page</title>
     </head>
     <body>
+        <c:if test="${empty sessionScope.loginUser}">
+            <c:redirect url="login.jsp"/>
+        </c:if>
+        
         <h1>Update Page</h1>
         <c:if test="${not empty sessionScope.loginUser}">
             Welcome ${sessionScope.loginUser.fullName} !
@@ -32,9 +36,14 @@
         </form>
 
         <form action="MainController" method="POST">
+            <input type="hidden" name="key" value="${param.key}" />
             <input type="hidden" name="id" value="${electronic.id}" />
             <input type="hidden" name="action" value="update" />
 
+            <label>ID:</label> <br />
+            <div>${electronic.id}</div>
+            ${requestScope.idError} <br />
+            
             <label for="name">Name</label> <br />
             <input type="text" id="name" name="name" value="${electronic.name}"/>
             ${requestScope.nameError} <br />
@@ -67,5 +76,11 @@
             <c:param name="url" value="search.jsp" />
         </c:url>
         <a href="${redirect}">Back to Search</a>
+        
+        <form action="MainController" method="GET">
+            <input type="hidden" name="key" value="${param.key}" />
+            <input type="hidden" name="action" value="search" />
+            <button type="submit">Back to Search with key</button>
+        </form>
     </body>
 </html>

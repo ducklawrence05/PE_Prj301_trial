@@ -24,7 +24,7 @@ import pe.model.ElectronicDto;
 @WebServlet(name="SoftDeleteController", urlPatterns={"/SoftDeleteController"})
 public class SoftDeleteController extends HttpServlet {
     private final String LOGIN_PAGE = "login.jsp";
-    private final String SEARCH_PAGE = "search.jsp";
+    private final String SEARCH_CONTROLLER = "SearchController";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -34,7 +34,7 @@ public class SoftDeleteController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String url = SEARCH_PAGE;
+        String url = SEARCH_CONTROLLER;
         try {
             HttpSession session = request.getSession(false);
             if(session == null || session.getAttribute("loginUser") == null) {

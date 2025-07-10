@@ -14,6 +14,10 @@
     </head>
     <body>
         <!--your code here-->
+        <c:if test="${empty sessionScope.loginUser}">
+            <c:redirect url="login.jsp"/>
+        </c:if>
+        
         <c:if test="${not empty sessionScope.loginUser}">
             Welcome ${sessionScope.loginUser.fullName} !
         </c:if>

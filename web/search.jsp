@@ -15,6 +15,10 @@
     </head>
     <body>
         <!--your code here-->
+        <c:if test="${empty sessionScope.loginUser}">
+            <c:redirect url="login.jsp"/>
+        </c:if>
+        
         <h1>Search Electronic</h1>
 
         <c:if test="${not empty sessionScope.loginUser}">
@@ -35,6 +39,7 @@
         </form>
 
         <c:url var="redirect" value="MainController">
+            <c:param name="key" value="${requestScope.key}"/>
             <c:param name="action" value="redirect" />
             <c:param name="url" value="create.jsp" />
         </c:url>
@@ -50,6 +55,7 @@
             <table border="1" style="border-collapse: collapse; width: 100%">
                 <thead>
                     <tr>
+                        <td>No</td>
                         <td>Id</td>
                         <td>Name</td>
                         <td>Description</td>
@@ -60,8 +66,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="item" items="${requestScope.list}">
+                    <c:forEach var="item" items="${requestScope.list}" varStatus="st">
                         <tr>
+                            <td>${st.count}</td>
                             <td>${item.id}</td>
                             <td>${item.name}</td>
                             <td>${item.description}</td>
@@ -77,16 +84,19 @@
                             </td>
                             <td>
                                 <form action="MainController" method="GET">
+                                    <input type="hidden" name="key" value="${requestScope.key}" />
                                     <input type="hidden" name="id" value="${item.id}" />
                                     <input type="hidden" name="action" value="getItem" /> 
                                     <button type="submit">Update</button>
                                 </form>
                                 <form action="MainController" method="POST">
+                                    <input type="hidden" name="key" value="${requestScope.key}" />
                                     <input type="hidden" name="id" value="${item.id}" />
                                     <input type="hidden" name="action" value="delete" /> 
                                     <button type="submit">Delete</button>
                                 </form>
                                 <c:url var="softDeleteUrl" value="MainController">
+                                    <c:param name="key" value="${requestScope.key}"/>
                                     <c:param name="action" value="softDelete" />
                                     <c:param name="id" value="${item.id}"/>
                                 </c:url>
@@ -97,6 +107,67 @@
                 </tbody>
             </table>
         </c:if>
-
+            
+        <br /> <br />
+        
+        ${requestScope.idError}
+        ${requestScope.nameError}
+        ${requestScope.descriptionError}
+        ${requestScope.priceError}
+        ${requestScope.quantityError}
+        ${requestScope.statusError}
+        
+        <c:if test="${list != null && not empty list}">
+            <table border="1" style="border-collapse: collapse; width: 100%">
+                <thead>
+                    <tr>
+                        <td>No</td>
+                        <td>Id</td>
+                        <td>Name</td>
+                        <td>Description</td>
+                        <td>Price</td>
+                        <td>Quantity</td>
+                        <td>Status</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="item" items="${requestScope.list}" varStatus="st">
+                    <form action="MainController" method="POST">
+                        <tr>
+                            <td>${st.count}</td>
+                            <td>
+                                ${item.id} <br />
+                            </td>
+                            <td>
+                                <input type="text" name="name" value="${item.name}"/> <br />
+                            </td>
+                            <td>
+                                <input type="text" name="description" value="${item.description}"/>  <br />
+                            </td>
+                            <td>
+                                <input type="number" step="any" name="price" value="${item.price}"/> <br />
+                            </td>
+                            <td>
+                                <input type="text" name="quantity" value="${item.quantity}"/> <br />
+                            </td>
+                            <td>
+                                <select name="status">
+                                    <option value="1" ${item.status ? "selected" : ""}>Available</option>
+                                    <option value="0" ${!item.status ? "selected" : ""}>Out of stock</option>
+                                </select> <br />
+                            </td>
+                            <td>
+                                <input type="hidden" name="key" value="${requestScope.key}" />
+                                <input type="hidden" name="id" value="${item.id}" />
+                                <input type="hidden" name="action" value="updateDirect" /> 
+                                <button type="submit">Update</button>
+                            </td>
+                        </tr>
+                    </form>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </c:if>
     </body>
 </html>

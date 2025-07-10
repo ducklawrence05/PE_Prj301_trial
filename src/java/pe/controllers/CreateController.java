@@ -23,6 +23,7 @@ public class CreateController extends HttpServlet {
 
     private final String LOGIN_PAGE = "login.jsp";
     private final String CREATE_PAGE = "create.jsp";
+    private final String SEARCH_CONTROLLER = "SearchController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -116,6 +117,7 @@ public class CreateController extends HttpServlet {
                         request.setAttribute("error", "Create failed.");
                     } else {
                         request.setAttribute("msg", "Create success.");
+                        url = SEARCH_CONTROLLER;
                     }
                 }
             }

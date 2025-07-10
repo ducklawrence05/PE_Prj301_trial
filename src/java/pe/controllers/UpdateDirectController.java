@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 import pe.model.ElectronicDao;
 import pe.model.ElectronicDto;
 
@@ -19,11 +18,10 @@ import pe.model.ElectronicDto;
  *
  * @author Admin
  */
-@WebServlet(name = "UpdateController", urlPatterns = {"/UpdateController"})
-public class UpdateController extends HttpServlet {
+@WebServlet(name = "UpdateDirectController", urlPatterns = {"/UpdateDirectController"})
+public class UpdateDirectController extends HttpServlet {
 
     private final String LOGIN_PAGE = "login.jsp";
-    private final String UPDATE_PAGE = "update.jsp";
     private final String SEARCH_CONTROLLER = "SearchController";
 
     /**
@@ -37,7 +35,7 @@ public class UpdateController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = UPDATE_PAGE;
+        String url = SEARCH_CONTROLLER;
         String regex = "E-[a-zA-Z0-9]{3}";
         try {
             HttpSession session = request.getSession(false);
@@ -121,7 +119,6 @@ public class UpdateController extends HttpServlet {
                         request.setAttribute("error", "Update failed.");
                     } else {
                         request.setAttribute("msg", "Update success.");
-                        url = SEARCH_CONTROLLER;
                     }
                 }
             }

@@ -59,6 +59,10 @@ public class MainController extends HttpServlet {
                     url = "GetItemController";
                     break;
                 }
+                case "updateDirect":{
+                    url = "UpdateDirectController";
+                    break;
+                }
                 case "delete":{
                     url = "DeleteController";
                     break;
