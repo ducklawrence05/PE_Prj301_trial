@@ -13,9 +13,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import pe.model.ElectronicDao;
 import pe.model.ElectronicDto;
+import pe.model.ElectronicViewDto;
 
 /**
  *
@@ -48,7 +50,8 @@ public class GetItemController extends HttpServlet {
                     if (item == null) {
                         request.setAttribute("error", "Id not found");
                     } else {
-                        request.setAttribute("electronic", item);
+                        ElectronicViewDto itemView = ElectronicViewDto.mapFromDto(item);
+                        request.setAttribute("electronic", itemView);
                     }
                 }
             }

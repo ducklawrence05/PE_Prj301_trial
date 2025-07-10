@@ -11,6 +11,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import pe.model.ElectronicDao;
 import pe.model.ElectronicDto;
 
@@ -36,7 +40,7 @@ public class UpdateDirectController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = SEARCH_CONTROLLER;
-        String regex = "E-[a-zA-Z0-9]{3}";
+        String regex = "E-\\d{3}";
         try {
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("loginUser") == null) {
@@ -51,6 +55,9 @@ public class UpdateDirectController extends HttpServlet {
                 String priceRaw = request.getParameter("price");
                 String quantityRaw = request.getParameter("quantity");
                 String statusRaw = request.getParameter("status");
+                String dateTestRaw = request.getParameter("dateTest");
+                String timeTestRaw = request.getParameter("timeTest");
+                String dateTimeTestRaw = request.getParameter("dateTimeTest");
 
                 boolean hasError = handleEmpty(request, id, "id");
                 if (!isNullOrEmptyString(id) && !id.matches(regex)) {
@@ -68,11 +75,14 @@ public class UpdateDirectController extends HttpServlet {
                 }
 
                 hasError = hasError 
-                        || handleEmpty(request, name, "name")
-                        || handleEmpty(request, description, "description")
-                        || handleEmpty(request, priceRaw, "price")
-                        || handleEmpty(request, quantityRaw, "quantity")
-                        || handleEmpty(request, statusRaw, "status");
+                        | handleEmpty(request, name, "name")
+                        | handleEmpty(request, description, "description")
+                        | handleEmpty(request, priceRaw, "price")
+                        | handleEmpty(request, quantityRaw, "quantity")
+                        | handleEmpty(request, statusRaw, "status")
+                        | handleEmpty(request, dateTestRaw, "date")
+                        | handleEmpty(request, timeTestRaw, "time")
+                        | handleEmpty(request, dateTimeTestRaw, "dateTime");
                 
                 // handle float
                 float price = 0;
@@ -113,8 +123,77 @@ public class UpdateDirectController extends HttpServlet {
                     status = statusRaw.equals("1");
                 }
 
+                // handle date
+                LocalDate dateTest = null;
+                if (!isNullOrEmptyString(dateTestRaw)) {
+                    try {
+                        dateTest = LocalDate.parse(dateTestRaw);
+
+                        // tạo 1 ngày cụ thể để check sau ngày đó (yyyy-MM-dd)
+                        // LocalDate minDate = LocalDate.of(2025, 7, 10);
+                        // hoặc dùng hiện tại
+                        LocalDate now = LocalDate.now();
+
+                        // dùng cái hàm isBefore, isEqual, isAfter để check (nếu cần)
+                        if (dateTest.isBefore(now)) {
+                            request.setAttribute("dateError", "Date must equal or after now");
+                            hasError = true;
+                        }
+                    } catch (DateTimeParseException e) {
+                        request.setAttribute("dateError", "Invalid date format.");
+                        hasError = true;
+                    }
+                }
+
+                // handle time
+                LocalTime timeTest = null;
+                if (!isNullOrEmptyString(timeTestRaw)) {
+                    try {
+                        timeTest = LocalTime.parse(timeTestRaw);
+
+                        // tạo 1 time cụ thể để check sau time đó (hh-mm-ss) or (hh-mm)
+                        // có overload khác nhau
+                        // LocalTime minTime = LocalTime.of(22, 0);
+                        // hoặc dùng hiện tại
+                        LocalTime now = LocalTime.now();
+
+                        // dùng cái hàm isBefore, isEqual, isAfter để check (nếu cần)
+                        if (timeTest.isBefore(now)) {
+                            request.setAttribute("timeError", "Time must equal or after now");
+                            hasError = true;
+                        }
+                    } catch (DateTimeParseException e) {
+                        request.setAttribute("timeError", "Invalid time format.");
+                        hasError = true;
+                    }
+                }
+
+                // handle date time
+                LocalDateTime dateTimeTest = null;
+                if (!isNullOrEmptyString(dateTimeTestRaw)) {
+                    try {
+                        dateTimeTest = LocalDateTime.parse(dateTimeTestRaw);
+
+                        // tự check overload
+                        // LocalDateTime minDateTime = LocalDateTime.of();
+                        // hoặc dùng hiện tại
+                        LocalDateTime now = LocalDateTime.now();
+
+                        // dùng cái hàm isBefore, isEqual, isAfter để check (nếu cần)
+                        if (dateTimeTest.isBefore(now)) {
+                            request.setAttribute("dateTimeError", "Date time must equal or after now");
+                            hasError = true;
+                        }
+                    } catch (DateTimeParseException e) {
+                        request.setAttribute("dateTimeError", "Invalid date time format.");
+                        hasError = true;
+                    }
+                }
+                
                 if (!hasError) {
-                    boolean check = dao.update(id, name, description, price, quantity, status);
+                    boolean check = dao.update(id, name, description, 
+                            price, quantity, status,
+                            dateTest, timeTest, dateTimeTest);
                     if (!check) {
                         request.setAttribute("error", "Update failed.");
                     } else {

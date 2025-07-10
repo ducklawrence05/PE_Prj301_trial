@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import pe.model.ElectronicDao;
 import pe.model.ElectronicDto;
+import pe.model.ElectronicViewDto;
 
 /**
  *
@@ -59,7 +60,11 @@ public class SearchController extends HttpServlet {
                 if (list.isEmpty()) {
                     request.setAttribute("error", "No data matching the search criteria found !");
                 } else {
-                    request.setAttribute("list", list);
+                    List<ElectronicViewDto> listView = new ArrayList<>();
+                    for (ElectronicDto item : list) {
+                        listView.add(ElectronicViewDto.mapFromDto(item));
+                    }
+                    request.setAttribute("list", listView);
                 }
             }
         } catch (Exception e) {

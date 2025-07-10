@@ -6,9 +6,15 @@
 package pe.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import pe.utils.DbUtils;
@@ -24,9 +30,11 @@ public class ElectronicDao {
     private final String GET_BY_ID = "SELECT * FROM tblElectronics WHERE id = ?";
     private final String GET_BY_NAME = "SELECT * FROM tblElectronics WHERE name LIKE ?";
     private final String CREATE = "INSERT INTO tblElectronics "
-            + "(id, name, description, price, quantity, status) "
-            + "VALUES (?,?,?,?,?,?)";
-    private final String UPDATE = "UPDATE tblElectronics SET name = ?, description = ?, price = ?, quantity = ?, status = ? "
+            + "(id, name, description, price, quantity, status, dateTest, timeTest, dateTimeTest) "
+            + "VALUES (?,?,?,?,?,?,?,?,?)";
+    private final String UPDATE = "UPDATE tblElectronics SET name = ?, description = ?, "
+            + "price = ?, quantity = ?, status = ?, "
+            + "dateTest = ?, timeTest = ?, dateTimeTest = ? "
             + "WHERE id = ?";
     private final String DELETE = "DELETE FROM tblElectronics WHERE id = ?";
     private final String SOFT_DELETE = "UPDATE tblElectronics SET status = 0 "
@@ -69,7 +77,10 @@ public class ElectronicDao {
         return list;
     }
 
-    public boolean create(String id, String name, String description, float price, int quantity, boolean status) throws ClassNotFoundException, SQLException {
+    public boolean create(String id, String name, String description, 
+            float price, int quantity, boolean status,
+            LocalDate dateTest, LocalTime timeTest, LocalDateTime dateTimeTest) 
+            throws ClassNotFoundException, SQLException {
         try ( Connection conn = DbUtils.getConnection();  PreparedStatement stm = conn.prepareStatement(CREATE)) {
             stm.setString(1, id);
             stm.setString(2, name);
@@ -77,11 +88,17 @@ public class ElectronicDao {
             stm.setFloat(4, price);
             stm.setInt(5, quantity);
             stm.setBoolean(6, status);
+            stm.setDate(7, Date.valueOf(dateTest));
+            stm.setTime(8, Time.valueOf(timeTest));
+            stm.setTimestamp(9, Timestamp.valueOf(dateTimeTest));
             return stm.executeUpdate() > 0;
         }
     }
 
-    public boolean update(String id, String name, String description, float price, int quantity, boolean status) throws ClassNotFoundException, SQLException {
+    public boolean update(String id, String name, String description, 
+            float price, int quantity, boolean status,
+            LocalDate dateTest, LocalTime timeTest, LocalDateTime dateTimeTest) 
+            throws ClassNotFoundException, SQLException {
         try ( Connection conn = DbUtils.getConnection();  
                 PreparedStatement stm = conn.prepareStatement(UPDATE)) {
             stm.setString(1, name);
@@ -89,7 +106,10 @@ public class ElectronicDao {
             stm.setFloat(3, price);
             stm.setInt(4, quantity);
             stm.setBoolean(5, status);
-            stm.setString(6, id);
+            stm.setDate(6, Date.valueOf(dateTest));
+            stm.setTime(7, Time.valueOf(timeTest));
+            stm.setTimestamp(8, Timestamp.valueOf(dateTimeTest));
+            stm.setString(9, id);
             return stm.executeUpdate() > 0;
         }
     }
@@ -117,7 +137,10 @@ public class ElectronicDao {
                 rs.getString("description"),
                 rs.getFloat("price"),
                 rs.getInt("quantity"),
-                rs.getBoolean("status")
+                rs.getBoolean("status"),
+                rs.getDate("dateTest").toLocalDate(),
+                rs.getTime("timeTest").toLocalTime(),
+                rs.getTimestamp("dateTimeTest").toLocalDateTime()
         );
     }
 }

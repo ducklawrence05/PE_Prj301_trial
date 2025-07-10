@@ -62,6 +62,9 @@
                         <td>Price</td>
                         <td>Quantity</td>
                         <td>Status</td>
+                        <td>Date</td>
+                        <td>Time</td>
+                        <td>Date time</td>
                         <td>Action</td>
                     </tr>
                 </thead>
@@ -82,6 +85,9 @@
                                     Out of stock
                                 </c:if>
                             </td>
+                            <td>${item.dateTest}</td>
+                            <td>${item.timeTest}</td>
+                            <td>${item.dateTimeTestDisplay}</td>
                             <td>
                                 <form action="MainController" method="GET">
                                     <input type="hidden" name="key" value="${requestScope.key}" />
@@ -116,6 +122,9 @@
         ${requestScope.priceError}
         ${requestScope.quantityError}
         ${requestScope.statusError}
+        ${requestScope.dateError}
+        ${requestScope.timeError}
+        ${requestScope.dateTimeError}
         
         <c:if test="${list != null && not empty list}">
             <table border="1" style="border-collapse: collapse; width: 100%">
@@ -128,6 +137,9 @@
                         <td>Price</td>
                         <td>Quantity</td>
                         <td>Status</td>
+                        <td>Date</td>
+                        <td>Time</td>
+                        <td>Date time</td>
                         <td>Action</td>
                     </tr>
                 </thead>
@@ -156,6 +168,15 @@
                                     <option value="1" ${item.status ? "selected" : ""}>Available</option>
                                     <option value="0" ${!item.status ? "selected" : ""}>Out of stock</option>
                                 </select> <br />
+                            </td>
+                            <td>
+                                <input type="date" name="dateTest" value="${item.dateTest}"/>
+                            </td>
+                            <td>
+                                <input type="time" name="timeTest" value="${item.timeTest}"/>
+                            </td>
+                            <td>
+                                <input type="datetime-local" name="dateTimeTest" value="${item.dateTimeTest}"/>
                             </td>
                             <td>
                                 <input type="hidden" name="key" value="${requestScope.key}" />

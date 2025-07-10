@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -67,6 +68,21 @@
             </select>
             ${requestScope.statusError}
 
+            <label for="dateTest">Date</label> <br />
+            <input type="date" id="dateTest" name="dateTest" 
+                   value="${electronic.dateTest}"/>
+            ${requestScope.dateError} <br />
+            
+            <label for="timeTest">Time</label> <br />
+            <input type="time" id="timeTest" name="timeTest" 
+                   value="${electronic.timeTest}"/>
+            ${requestScope.timeError} <br />
+            
+            <label for="dateTimeTest">Date time</label> <br />
+            <input type="datetime-local" id="dateTimeTest" name="dateTimeTest" 
+                   value="${electronic.dateTimeTest}"/>
+            ${requestScope.dateTimeError} <br />
+            
             <br />
             <button type="submit">Update</button>
         </form>

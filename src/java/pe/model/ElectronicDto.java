@@ -4,6 +4,10 @@
  */
 package pe.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 /**
  *
  * @author Computing Fundamental - HCM Campus
@@ -16,17 +20,23 @@ public class ElectronicDto {
     private float price;
     private int quantity;
     private boolean status;
+    private LocalDate dateTest;
+    private LocalTime timeTest;
+    private LocalDateTime dateTimeTest;
 
     public ElectronicDto() {
     }
 
-    public ElectronicDto(String id, String name, String description, float price, int quantity, boolean status) {
+    public ElectronicDto(String id, String name, String description, float price, int quantity, boolean status, LocalDate dateTest, LocalTime timeTest, LocalDateTime dateTimeTest) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
         this.status = status;
+        this.dateTest = dateTest;
+        this.timeTest = timeTest;
+        this.dateTimeTest = dateTimeTest;
     }
 
     public String getId() {
@@ -76,7 +86,31 @@ public class ElectronicDto {
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
+
+    public LocalDate getDateTest() {
+        return dateTest;
+    }
+
+    public void setDateTest(LocalDate dateTest) {
+        this.dateTest = dateTest;
+    }
+
+    public LocalTime getTimeTest() {
+        return timeTest;
+    }
+
+    public void setTimeTest(LocalTime timeTest) {
+        this.timeTest = timeTest;
+    }
+
+    public LocalDateTime getDateTimeTest() {
+        return dateTimeTest;
+    }
+
+    public void setDateTimeTest(LocalDateTime dateTimeTest) {
+        this.dateTimeTest = dateTimeTest;
+    }
+
     
 }
 

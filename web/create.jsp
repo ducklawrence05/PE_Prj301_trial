@@ -67,6 +67,18 @@
                 <option value="0">Out of stock</option>
             </select>
             ${requestScope.statusError}
+            
+            <label for="dateTest">Date</label> <br />
+            <input type="date" id="dateTest" name="dateTest" />
+            ${requestScope.dateError} <br />
+            
+            <label for="timeTest">Time</label> <br />
+            <input type="time" id="timeTest" name="timeTest" />
+            ${requestScope.timeError} <br />
+            
+            <label for="dateTimeTest">Date time</label> <br />
+            <input type="datetime-local" id="dateTimeTest" name="dateTimeTest" />
+            ${requestScope.dateTimeError} <br />
 
             <br />
             <button type="submit">Create</button>

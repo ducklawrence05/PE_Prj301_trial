@@ -33,7 +33,10 @@ CREATE TABLE tblElectronics (
     description NVARCHAR(500) NOT NULL,
     price FLOAT NOT NULL,
     quantity INT NOT NULL,
-    status BIT DEFAULT 1
+    status BIT DEFAULT 1,
+	dateTest DATE DEFAULT CAST(GETDATE() AS DATE),
+    timeTest TIME DEFAULT CAST(GETDATE() AS TIME),
+    dateTimeTest DATETIME DEFAULT GETDATE()
 );
 GO
 
