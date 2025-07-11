@@ -93,6 +93,9 @@ public class CreateController extends HttpServlet {
                         if (price <= 0) {
                             request.setAttribute("priceError", "price must be greater than 0.");
                             hasError = true;
+                        } else if (Float.isInfinite(price) && price > 0) {
+                            request.setAttribute("priceError", "price exceeds the maximum float value.");
+                            hasError = true;
                         }
                     } catch (NumberFormatException ex) {
                         request.setAttribute("priceError", "price must be a number.");
@@ -110,7 +113,7 @@ public class CreateController extends HttpServlet {
                             hasError = true;
                         }
                     } catch (NumberFormatException ex) {
-                        request.setAttribute("quantityError", "quantity must be a number.");
+                        request.setAttribute("quantityError", "quantity must be a number within the allowed range of an int.");
                         hasError = true;
                     }
                 }
